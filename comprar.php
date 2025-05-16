@@ -1,69 +1,62 @@
 <?php
 session_start();
 
+// Función para conectar a la base de datos
 function conectarBD() {
     $conexion = mysqli_connect("localhost", "root", "", "tienda");
     if (!$conexion) {
-        die("Error al conectar a la base de datos: " . mysqli_connect_error());
+        die("Error al conectar a la base de datos");
     }
     return $conexion;
 }
 
-function obtenerProducto($conexion, int $id_producto): ?array {
-    $sql = "SELECT nombre FROM productos WHERE id_producto = ?";
-    $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id_producto);
-    mysqli_stmt_execute($stmt);
-    $resultado = mysqli_stmt_get_result($stmt);
-    $producto = mysqli_fetch_assoc($resultado);
-    mysqli_stmt_close($stmt);
-    return $producto ?: null;
+// Función para obtener el nombre de un producto por su id
+function obtenerProducto($conexion, $id_producto) {
+    $sql = "SELECT nombre FROM productos WHERE id_producto = $id_producto";
+    $resultado = mysqli_query($conexion, $sql);
+    if ($fila = mysqli_fetch_assoc($resultado)) {
+        return $fila['nombre'];
+    }
+    return null;
 }
 
-function registrarCompra($conexion, string $nombre_producto, string $fecha_compra): bool {
-    $sql = "INSERT INTO datos (nombre_producto, fecha_compra) VALUES (?, ?)";
-    $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $nombre_producto, $fecha_compra);
-    $exito = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    return $exito;
+// Función para registrar la compra en la tabla datos
+function registrarCompra($conexion, $nombre_producto, $fecha_compra) {
+    $sql = "INSERT INTO datos (nombre_producto, fecha_compra) VALUES ('$nombre_producto', '$fecha_compra')";
+    return mysqli_query($conexion, $sql);
 }
 
-function eliminarProducto($conexion, int $id_producto): bool {
-    $sql = "DELETE FROM productos WHERE id_producto = ?";
-    $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id_producto);
-    $exito = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    return $exito;
+// Función para eliminar el producto comprado
+function eliminarProducto($conexion, $id_producto) {
+    $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
+    return mysqli_query($conexion, $sql);
 }
 
+// Función principal para realizar la compra
 function realizarCompra() {
     if (!isset($_SESSION['usuario'])) {
-        die("Error: El usuario no ha iniciado sesión.");
+        die("Error: Debes iniciar sesión.");
     }
 
     if (!isset($_GET['id_producto'])) {
-        die("<p>Error: No se ha seleccionado ningún producto.</p>");
+        die("Error: No se seleccionó ningún producto.");
     }
 
-    $id_producto = intval($_GET['id_producto']);
+    $id_producto = (int)$_GET['id_producto'];
     $conexion = conectarBD();
 
-    $producto = obtenerProducto($conexion, $id_producto);
-    if (!$producto) {
+    $nombre_producto = obtenerProducto($conexion, $id_producto);
+    if (!$nombre_producto) {
         mysqli_close($conexion);
-        die("<p>Error: No se encontró el producto en la base de datos.</p>");
+        die("Error: Producto no encontrado.");
     }
-
-    $nombre_producto = $producto['nombre'];
 
     date_default_timezone_set('Europe/Madrid');
     $fecha_compra = date('Y-m-d H:i:s');
 
     if (registrarCompra($conexion, $nombre_producto, $fecha_compra)) {
         if (eliminarProducto($conexion, $id_producto)) {
-            $mensaje = "¡Compra realizada con éxito!";
+            $mensaje = "Compra realizada con éxito.";
         } else {
             $mensaje = "Error al eliminar el producto.";
         }
