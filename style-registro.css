@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'Halter';
+    src: url('fonts/halter.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Aplicación de la fuente globalmente */
+* {
+    font-family: 'Halter', Arial, sans-serif;
+}
+
+/* Estilo general */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #2D1E5B, #1E3A5B);
+    color: #fff;
+    text-align: center;
+}
+
+/* Contenedor principal */
+.registro-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Título de registro */
+.registro-titulo {
+    font-size: 2.5em;
+    color: #fff;
+    background-color: #4B0082; /* Morado oscuro */
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+}
+
+/* Formulario de registro */
+.registro-form {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+/* Campos de entrada */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.registro-label {
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+.registro-input {
+    font-size: 1em;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+}
+
+/* Contenedor de botones */
+.botones-contenedor {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Botón de registro */
+.registro-boton {
+    background-color: #4B0082;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    flex: 7;
+    transition: background-color 0.3s ease;
+}
+
+.registro-boton:hover {
+    background-color: #663399;
+    opacity: 0.8;
+}
+
+/* Botón de login */
+.login-boton {
+    background-color: #1E90FF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    flex: 3;
+    transition: background-color 0.3s ease;
+}
+
+.login-boton:hover {
+    background-color: #005db4;
+    opacity: 0.8;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .registro-titulo {
+        font-size: 2em;
+    }
+
+    .registro-form {
+        width: 100%;
+        padding: 15px;
+    }
+}

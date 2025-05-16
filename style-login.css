@@ -1,0 +1,61 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #2D1E5B, #1E3A5B);
+    color: #fff;
+    text-align: center;
+    padding: 40px;
+}
+
+/* Contenedor del formulario */
+.login-form, .botones-contenedor {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin: auto;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Campos de entrada */
+input[type="text"], input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+}
+
+/* Botones */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-boton {
+    background-color: #4B0082;
+    color: #fff;
+}
+
+.anonimo-boton {
+    background-color: #1E90FF;
+    color: #fff;
+}
+
+.registro-boton {
+    background-color: #663399;
+    color: #fff;
+}
+
+button:hover {
+    opacity: 0.8;
+}

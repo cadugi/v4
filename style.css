@@ -1,0 +1,123 @@
+@font-face {
+    font-family: 'Halter';
+    src: url('fonts/halter.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Aplicación global */
+* {
+    font-family: 'Halter', Arial, sans-serif;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Fondo y estructura general */
+body {
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #2D1E5B, #1E3A5B);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+main {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo de la barra superior */
+.perfil-contenedor {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: transparent;
+    padding: 10px;
+}
+
+/* Ajustar imágenes de perfil y logout */
+img[title="Cerrar sesión"],
+img[src*="perfil.png"] {
+    width: 60px;
+    height: auto;
+}
+
+/* Títulos */
+h1, h2 {
+    color: #ddd;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilo de la lista de productos */
+ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+li {
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #FFD700;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #FF4500;
+}
+
+/* Botones */
+button {
+    background-color: #4B0082;
+    color: #fff;
+    padding: 10px 15px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #663399;
+    opacity: 0.8;
+}
+
+/* Pie de página */
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* Ajustar iconos */
+img {
+    width: 50px;
+    vertical-align: middle;
+    margin-right: 10px;
+}

@@ -1,0 +1,71 @@
+/* Estilos generales para el menú */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: rgba(45, 30, 91, 0.9);
+    color: #fff;
+    padding: 20px;
+    box-shadow: 4px 0px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Encabezado del menú */
+.menu-header h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #FFD700;
+    padding-bottom: 10px;
+}
+
+/* Lista de opciones */
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin: 15px 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #FFD700;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.menu a:hover {
+    background: rgba(255, 215, 0, 0.2);
+}
+
+/* Opción deshabilitada */
+.menu li a[style*="gray"] {
+    color: #777;
+    cursor: default;
+}
+
+/* Botón de alternar menú */
+.menu-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 30px;
+    color: #fff;
+    background: #4B0082;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Ocultar menú cuando está cerrado */
+.hidden {
+    transform: translateX(-100%);
+}

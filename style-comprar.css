@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Halter';
+    src: url('fonts/halter.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Aplicación global */
+* {
+    font-family: 'Halter', Arial, sans-serif;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Fondo y estructura general */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #2D1E5B, #1E3A5B);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #fff;
+}
