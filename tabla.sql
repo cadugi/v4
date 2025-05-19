@@ -1,37 +1,38 @@
--- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS tienda;
-USE tienda;
-
--- Tabla de usuarios
-CREATE TABLE IF NOT EXISTS usuarios (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE usuarios (
+    id_usuario INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     telefono VARCHAR(20),
-    contraseña VARCHAR(100) NOT NULL
+    contraseña VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id_usuario)
 );
-
--- Tabla de categorías
-CREATE TABLE IF NOT EXISTS categorias (
-    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_categoria VARCHAR(100) NOT NULL UNIQUE
+ 
+-- Tabla: categorias
+CREATE TABLE categorias (
+    id_categoria INT NOT NULL AUTO_INCREMENT,
+    nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
+    PRIMARY KEY (id_categoria)
 );
-
--- Tabla de productos
-CREATE TABLE IF NOT EXISTS productos (
-    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+ 
+-- Tabla: productos
+CREATE TABLE productos (
+    id_producto INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     precio DECIMAL(10,2) NOT NULL,
     nombre_imagen VARCHAR(255),
     categoria_id INT,
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id_categoria) ON DELETE SET NULL
+    id_vendedor INT,
+    PRIMARY KEY (id_producto),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id_categoria),
+    FOREIGN KEY (id_vendedor) REFERENCES usuarios(id_usuario)
 );
-
--- Tabla de datos (compras)
-CREATE TABLE IF NOT EXISTS datos (
-    id_dato INT AUTO_INCREMENT PRIMARY KEY,
+ 
+-- Tabla: datos
+CREATE TABLE datos (
+    id_dato INT NOT NULL AUTO_INCREMENT,
     nombre_producto VARCHAR(100) NOT NULL,
-    fecha_compra DATETIME NOT NULL
+    fecha_compra DATETIME NOT NULL,
+    PRIMARY KEY (id_dato)
 );
