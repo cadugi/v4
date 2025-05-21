@@ -37,13 +37,14 @@ function procesarFormulario($conexion, $email) {
     $categoria = $_POST['categoria'];
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
-    $imagen = $_FILES['imagen'];
+    $imagenes = $_FILES['imagenes'];
 
-    // Intenta subir la imagen
-    $ruta_imagen = subirImagen($imagen);
-    if (!$ruta_imagen) {
-        die("Error al subir la imagen.");
+    // Sube todas las imágenes y guarda las rutas en un array
+    $rutas_imagenes = subirImagenes($imagenes);
+    if (!$rutas_imagenes) {
+        die("Error al subir las imágenes.");
     }
+    $rutas_serializadas = serialize($rutas_imagenes); // Guarda como string serializado
 
     // Obtiene el ID del vendedor actual
     $id_vendedor = obtenerIdUsuario($conexion, $email);
@@ -52,40 +53,39 @@ function procesarFormulario($conexion, $email) {
     }
 
     // Inserta el producto en la base de datos
-    if (insertarProducto($conexion, $nombre, $categoria, $descripcion, $precio, $ruta_imagen, $id_vendedor)) {
-        header("Location: productos.php"); // Redirige a productos si todo fue bien
+    if (insertarProducto($conexion, $nombre, $categoria, $descripcion, $precio, $rutas_serializadas, $id_vendedor)) {
+        header("Location: productos.php");
         exit();
     } else {
         echo "Error al insertar el producto.";
     }
 }
 
-// Sube la imagen al servidor
-function subirImagen($imagen) {
+// Sube varias imágenes al servidor
+function subirImagenes($imagenes) {
     $permitidas = ['png', 'jpg', 'jpeg', 'webp'];
-    $extension = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
-
-    // Verifica que la extensión esté permitida
-    if (!in_array($extension, $permitidas)) {
-        die("Formato de imagen no permitido.");
+    $rutas = [];
+    for ($i = 0; $i < count($imagenes['name']); $i++) {
+        $extension = strtolower(pathinfo($imagenes['name'][$i], PATHINFO_EXTENSION));
+        if (!in_array($extension, $permitidas)) {
+            continue; // Salta archivos no permitidos
+        }
+        if (!is_dir('images')) {
+            mkdir('images');
+        }
+        $nombre_archivo = uniqid() . '_' . basename($imagenes['name'][$i]);
+        $ruta = 'images/' . $nombre_archivo;
+        if (move_uploaded_file($imagenes['tmp_name'][$i], $ruta)) {
+            $rutas[] = $ruta;
+        }
     }
-
-    // Crea la carpeta 'images' si no existe
-    if (!is_dir('images')) {
-        mkdir('images');
-    }
-
-    // Define la ruta donde se guardará la imagen
-    $ruta = 'images/' . basename($imagen['name']);
-
-    // Mueve la imagen a la carpeta y retorna la ruta si fue exitoso
-    return move_uploaded_file($imagen['tmp_name'], $ruta) ? $ruta : false;
+    return count($rutas) > 0 ? $rutas : false;
 }
 
 // Inserta el producto en la base de datos
-function insertarProducto($conexion, $nombre, $categoria, $descripcion, $precio, $imagen, $id_vendedor) {
+function insertarProducto($conexion, $nombre, $categoria, $descripcion, $precio, $imagenes, $id_vendedor) {
     $stmt = mysqli_prepare($conexion, "INSERT INTO productos (nombre, descripcion, precio, nombre_imagen, categoria_id, id_vendedor) VALUES (?, ?, ?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "ssdssi", $nombre, $descripcion, $precio, $imagen, $categoria, $id_vendedor);
+    mysqli_stmt_bind_param($stmt, "ssdssi", $nombre, $descripcion, $precio, $imagenes, $categoria, $id_vendedor);
     $resultado = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     return $resultado;
@@ -123,8 +123,8 @@ function insertarProducto($conexion, $nombre, $categoria, $descripcion, $precio,
         <!-- Campo para el precio -->
         <input type="number" name="precio" placeholder="Precio" required>
 
-        <!-- Campo para subir imagen -->
-        <input type="file" name="imagen" accept=".png,.jpg,.jpeg,.webp" required>
+        <!-- Campo para subir imágenes -->
+        <input type="file" name="imagenes[]" accept=".png,.jpg,.jpeg,.webp" multiple required>
 
         <!-- Botón de enviar -->
         <button type="submit">Publicar</button>

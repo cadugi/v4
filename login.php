@@ -4,6 +4,10 @@ session_start();
 
 // Función para iniciar sesión como administrador directamente
 function entrarComoAdmin() {
+    if (!isset($_POST['admin_pass']) || $_POST['admin_pass'] !== '4237') {
+        echo "<p style='color:red;text-align:center;'>Contraseña de administrador incorrecta.</p>";
+        return;
+    }
     $_SESSION['usuario'] = 'admin@tienda.com';              // Guarda email ficticio
     $_SESSION['nombre_completo'] = 'Administrador';         // Nombre a mostrar
     $_SESSION['rol'] = 'admin';                             // Rol asignado
@@ -93,10 +97,19 @@ if (isset($_POST['admin_directo'])) {
             <button type="submit" class="anonimo-boton">Modo Anónimo</button>
         </form>
 
-        <form method="POST">
+        <form method="POST" id="admin-form" style="display:inline;">
             <input type="hidden" name="admin_directo" value="1">
-            <button type="submit" class="registro-boton">Entrar como Administrador</button>
+            <button type="button" class="registro-boton" onclick="mostrarAdminPass()">Entrar como Administrador</button>
+            <div id="admin-pass-div" style="display:none;margin-top:10px;">
+                <input type="password" name="admin_pass" id="admin_pass" placeholder="Contraseña admin">
+                <button type="submit" class="registro-boton">Acceder</button>
+            </div>
         </form>
+        <script>
+        function mostrarAdminPass() {
+            document.getElementById('admin-pass-div').style.display = 'block';
+        }
+        </script>
 
         <button type="button" class="registro-boton" onclick="window.location.href='registro.php'">Registrarse</button>
     </div>

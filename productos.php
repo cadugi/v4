@@ -60,12 +60,19 @@ mysqli_close($conexion);
         <h2><?php echo htmlspecialchars($categoria); ?></h2>
         <div class="producto-catalogo">
             <!-- Recorre los productos dentro de cada categoría -->
-            <?php foreach ($items as $p): ?>
+            <?php foreach ($items as $p): 
+                $imagenes = @unserialize($p['nombre_imagen']);
+                if ($imagenes === false) $imagenes = [$p['nombre_imagen']];
+            ?>
                 <div class="producto">
                     <!-- Enlace a la página para comprar el producto -->
                     <a href="comprar.php?id_producto=<?php echo $p['id_producto']; ?>">
-                        <!-- Muestra la imagen del producto -->
-                        <img src="<?php echo htmlspecialchars($p['nombre_imagen']); ?>" alt="">
+                        <!-- Carrusel de imágenes del producto -->
+                        <div class="carrusel" style="width:200px;height:200px;overflow:hidden;">
+                            <?php foreach ($imagenes as $idx => $img): ?>
+                                <img src="<?php echo htmlspecialchars($img); ?>" class="carrusel-img" style="display:<?php echo $idx === 0 ? 'block' : 'none'; ?>;width:100%;height:200px;object-fit:cover;">
+                            <?php endforeach; ?>
+                        </div>
                         <!-- Muestra el nombre del producto -->
                         <h3><?php echo htmlspecialchars($p['nombre']); ?></h3>
                         <!-- Muestra la descripción del producto -->
@@ -79,5 +86,22 @@ mysqli_close($conexion);
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
+    <br>
+    <button onclick="window.location.href='index.php'">↩ Volver</button>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.carrusel').forEach(function(carrusel) {
+            const imgs = carrusel.querySelectorAll('.carrusel-img');
+            if (imgs.length <= 1) return;
+            let idx = 0;
+            setInterval(() => {
+                imgs[idx].style.display = 'none';
+                idx = (idx + 1) % imgs.length;
+                imgs[idx].style.display = 'block';
+            }, 2000);
+        });
+    });
+    </script>
 </body>
 </html>
