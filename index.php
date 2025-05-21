@@ -96,10 +96,12 @@ function mostrarContenidoPrincipal($rol, $imagen_perfil, $categorias) {
         <?php endif; ?>
 
         <h2>Categorías disponibles:</h2>
-        <ul>
-            <?php foreach ($categorias as $categoria): ?>
-                <li>
-                    <!-- Enlace hacia la sección de esa categoría en productos.php -->
+        <ul style="width: 100%; max-width: 400px; margin: 0 auto;">
+            <?php foreach ($categorias as $i => $categoria): ?>
+                <?php if ($i > 0): ?>
+                    <hr style="border: 0; border-top: 2px solid #FFD700; margin: 8px 0;">
+                <?php endif; ?>
+                <li style="padding: 10px 0;">
                     <a href="productos.php#<?php echo urlencode(strtolower(str_replace(' ', '', $categoria))); ?>">
                         <?php echo htmlspecialchars($categoria); ?>
                     </a>

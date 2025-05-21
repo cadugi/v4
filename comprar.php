@@ -42,6 +42,11 @@ function realizarCompra() {
         die("Error: Debes iniciar sesión.");
     }
 
+    // No permitir compras con usuario anónimo
+    if ($_SESSION['usuario'] === 'anonimo') {
+        die("Error: No puedes comprar productos como usuario anónimo.");
+    }
+
     if (!isset($_POST['id_producto']) || !isset($_POST['tarjeta']) || !isset($_POST['caducidad']) || !isset($_POST['cvv'])) {
         die("Error: Datos incompletos.");
     }
@@ -59,6 +64,13 @@ function realizarCompra() {
     $precio_producto = $producto['precio'];
     $email_vendedor = mysqli_real_escape_string($conexion, $producto['vendedor_email']);
     $email_comprador = mysqli_real_escape_string($conexion, $_SESSION['usuario']);
+
+    // No permitir comprar tu propio producto
+    if ($email_comprador === $email_vendedor) {
+        mysqli_close($conexion);
+        die("Error: No puedes comprar tu propio producto.");
+    }
+
     $fecha_compra = date('Y-m-d H:i:s');
     $tarjeta = mysqli_real_escape_string($conexion, $_POST['tarjeta']);
     $caducidad = mysqli_real_escape_string($conexion, $_POST['caducidad']);
